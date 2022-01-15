@@ -4,9 +4,6 @@ import { render } from 'react-dom';
 import { Navigation } from './Navigation';
 
 render(
-  <>
-    <Navigation>
-    </Navigation>
-  </>,
+  <Navigation />,
   document.getElementById('root')
 );

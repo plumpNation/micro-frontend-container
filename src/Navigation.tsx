@@ -1,8 +1,10 @@
 import React, { FC } from 'react'
 import { Routes, Route, BrowserRouter, Link, Outlet } from 'react-router-dom'
+// @ts-ignore
+import ChildApp from 'ChildApp/ChildApp';
 
 const AboutWorld: FC = () => <div>About World!</div>;
-const HelloReact: FC = () => <div>Hello React!</div>;
+const HelloReact: FC = () => <ChildApp />;
 const Home: FC = () => (
   <>
     <nav>
