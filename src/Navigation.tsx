@@ -1,10 +1,19 @@
-import React, { FC } from 'react'
+import React, { FC, Suspense, lazy } from 'react'
 import { Routes, Route, BrowserRouter, Link, Outlet } from 'react-router-dom'
-// @ts-ignore
-import ChildApp from 'ChildApp/ChildApp';
 
 const AboutWorld: FC = () => <div>About World!</div>;
-const HelloReact: FC = () => <ChildApp info={{name: "Jeff", age: 10}} />;
+
+const HelloReact: FC = () => {
+  // @ts-ignore
+  const ChildApp = lazy(() => import('ChildApp/ChildApp'));
+
+  return (
+    <Suspense fallback={<div>loading remote child...</div>}>
+      <ChildApp info={{name: "Jeff", age: 10}} />
+    </Suspense>
+  );
+};
+
 const Home: FC = () => (
   <>
     <nav>
