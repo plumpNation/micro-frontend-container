@@ -4,7 +4,7 @@ import { Routes, Route, BrowserRouter, Link, Outlet } from 'react-router-dom'
 import ChildApp from 'ChildApp/ChildApp';
 
 const AboutWorld: FC = () => <div>About World!</div>;
-const HelloReact: FC = () => <ChildApp name="Jeff" />;
+const HelloReact: FC = () => <ChildApp info={{name: "Jeff", age: 10}} />;
 const Home: FC = () => (
   <>
     <nav>
