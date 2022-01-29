@@ -1,5 +1,7 @@
-import React, { FC, Suspense, lazy } from 'react'
+import { FC, Suspense, lazy } from 'react'
 import { Routes, Route, BrowserRouter, Link, Outlet } from 'react-router-dom'
+
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const AboutWorld: FC = () => <div>About World!</div>;
 
@@ -8,7 +10,10 @@ const HelloReact: FC = () => {
 
   return (
     <Suspense fallback={<div>loading remote child...</div>}>
-      <ChildApp info={{name: "Jeff", age: 10}} />
+      <ErrorBoundary remote message="ChildApp could not be loaded">
+        {/* @ts-ignore: next-line */}
+        <ChildApp />
+      </ErrorBoundary>
     </Suspense>
   );
 };
