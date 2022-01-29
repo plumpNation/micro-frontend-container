@@ -14,11 +14,10 @@ const HelloReact: FC = () => {
   );
 };
 
-const Home: FC = () => (
+const MainLayout: FC = () => (
   <>
     <nav>
       <Link to="/about">About</Link>
-      <Link to="/react">React</Link>
     </nav>
     <Outlet />
   </>
@@ -27,8 +26,8 @@ const Home: FC = () => (
 export const Navigation: FC = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />}>
-        <Route path="react" element={<HelloReact />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<HelloReact />} />
         <Route path="about" element={<AboutWorld />} />
       </Route>
     </Routes>
