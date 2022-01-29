@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Navigation } from './Navigation';
+import { App } from './App';
 
 render(
-  <Navigation />,
+  <App />,
   document.getElementById('root')
 );

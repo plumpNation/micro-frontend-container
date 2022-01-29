@@ -4,8 +4,7 @@ import { Routes, Route, BrowserRouter, Link, Outlet } from 'react-router-dom'
 const AboutWorld: FC = () => <div>About World!</div>;
 
 const HelloReact: FC = () => {
-  // @ts-ignore
-  const ChildApp = lazy(() => import('ChildApp/ChildApp'));
+  const ChildApp = lazy(() => import('remoteRepo/ChildApp'));
 
   return (
     <Suspense fallback={<div>loading remote child...</div>}>
@@ -23,7 +22,7 @@ const MainLayout: FC = () => (
   </>
 );
 
-export const Navigation: FC = () => (
+export const App: FC = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<MainLayout />}>
