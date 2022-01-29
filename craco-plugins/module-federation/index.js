@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const paths = require("react-scripts/config/paths");
 
-const getModuleFederationConfigPath = (additionalPaths = []) => {
+const getModuleFederationConfig = (additionalPaths = []) => {
   const path = require("path");
   const fs = require("fs");
   const appDirectory = fs.realpathSync(process.cwd());
@@ -12,38 +12,46 @@ const getModuleFederationConfigPath = (additionalPaths = []) => {
     ...additionalPaths,
   ];
 
-  return moduleFederationConfigFiles
+  const moduleFederationConfigPath = moduleFederationConfigFiles
     .map(resolveApp)
     .filter(fs.existsSync)
     .shift();
+
+  if (moduleFederationConfigPath) {
+    return require(moduleFederationConfigPath);
+  }
+
+  return null;
 };
 
 module.exports = {
   overrideWebpackConfig: ({ webpackConfig }) => {
-    const moduleFederationConfigPath = getModuleFederationConfigPath();
+    const moduleFederationConfig = getModuleFederationConfig();
 
-    if (moduleFederationConfigPath) {
-      webpackConfig.output.publicPath = "auto";
-
-      const htmlWebpackPlugin = webpackConfig.plugins.find(
-        (plugin) => plugin.constructor.name === "HtmlWebpackPlugin"
-      );
-
-      htmlWebpackPlugin.userOptions = {
-        ...htmlWebpackPlugin.userOptions,
-        publicPath: paths.publicUrlOrPath,
-        excludeChunks: [require(moduleFederationConfigPath).name],
-      };
-
-      webpackConfig.plugins = [
-        ...webpackConfig.plugins,
-        new webpack.container.ModuleFederationPlugin(
-          require(moduleFederationConfigPath)
-        ),
-      ];
+    if (!moduleFederationConfig) {
+      return webpackConfig;
     }
+
+    webpackConfig.output.publicPath = "auto";
+
+    const htmlWebpackPlugin = webpackConfig.plugins.find(
+      (plugin) => plugin.constructor.name === "HtmlWebpackPlugin"
+    );
+
+    htmlWebpackPlugin.userOptions = {
+      ...htmlWebpackPlugin.userOptions,
+      publicPath: paths.publicUrlOrPath,
+      excludeChunks: [moduleFederationConfig.name],
+    };
+
+    webpackConfig.plugins = [
+      ...webpackConfig.plugins,
+      new webpack.container.ModuleFederationPlugin(moduleFederationConfig),
+    ];
+
     return webpackConfig;
   },
+
   overrideDevServerConfig: ({ devServerConfig }) => {
     devServerConfig.headers = {
       "Access-Control-Allow-Origin": "*",
